@@ -8,6 +8,7 @@ This sample showcases the selective loading capabilities of the APS Viewer v7, a
 
 ## Live Demo
 
+LIVE DEMO CURRENTLY POINTS TO AGGREGATED BRANCH AS A TEST.
 You can test this sample live here: https://joaomartins-callmejohn.github.io/aps-selective-loading-example/
 
 ## How It Works
