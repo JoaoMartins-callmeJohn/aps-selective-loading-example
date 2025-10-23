@@ -53,16 +53,21 @@
 <script>
   var tokenurl = 'https://9sjonbv0c5.execute-api.us-east-1.amazonaws.com/default/aps-2lo-lambda';
   var viewer;
-  var urn = "dXJuOmFkc2sub2JqZWN0czpvcy5vYmplY3Q6anBvbS1kZWJ1Zy10ZXN0LWJ1Y2tldC9yYWNhZHZhbmNlZHNhbXBsZXByb2plY3QucnZ0";
-  
+  var urnOne = "dXJuOmFkc2sub2JqZWN0czpvcy5vYmplY3Q6anBvbS1kZWJ1Zy10ZXN0LWJ1Y2tldC9pZmMucnZ0";
+  var urnTwo = "dXJuOmFkc2sub2JqZWN0czpvcy5vYmplY3Q6anBvbS1kZWJ1Zy10ZXN0LWJ1Y2tldC9yZXZpdC5ydnQ";
 
   function selectiveLoading(){
     let propertyInput = document.getElementById('propertyInput').value;
     let valuesInput = document.getElementById('valuesInput').value;
-    loadModel(propertyInput, valuesInput);
+    const models = viewer.impl.modelQueue().getModels();
+    for(const model of models){
+      viewer.impl.unloadModel( model );
+    }
+    loadModel(propertyInput, valuesInput, urnOne);
+    loadModel(propertyInput, valuesInput, urnTwo);
   }
 
-  async function loadModel(propertyInput, valuesInput) {
+  async function loadModel(propertyInput, valuesInput, urn) {
     Autodesk.Viewing.Document.load(`urn:${urn}`, doc => {
       var viewables = doc.getRoot().getDefaultGeometry();
       if(propertyInput && valuesInput){
@@ -79,6 +84,7 @@
         });
         
         viewer.loadDocumentNode(doc, viewables, {
+          keepCurrentModels: true,
           filter: {
             property_query: {
               "$or": valuesArray
@@ -117,7 +123,8 @@
         viewer.start();
         viewer.setTheme("light-theme");
       });
-      loadModel(null, null);
+      loadModel(null, null, urnOne);
+      loadModel(null, null, urnTwo);
     });
   }
 
